@@ -57,6 +57,9 @@ span.remove-button:hover {
 
 .transitionRow input {
   max-width: 100px;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
 }
 
 .formInline {
