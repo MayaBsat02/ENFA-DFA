@@ -70,3 +70,9 @@ span.remove-button:hover {
   -ms-flex-align: center;
   align-items: center;
 }
+
+.check{
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+}

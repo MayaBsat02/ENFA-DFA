@@ -2,15 +2,9 @@ import React, { useContext, useState } from "react";
 import Transitions from "../components/transitions";
 import styles from "../style/main.module.css";
 import { Graphviz } from "graphviz-react";
-import {
-  generateDFA,
-  toDotString,
-  formatDotState,
-} from "../helpers/E-NFA-Converter";
+import { formatDotState } from "../helpers/E-NFA-Converter";
 import NFAContext from "../storeContext/AutomataContext";
 import { Button, Typography, Box, TextField } from "@mui/material";
-
-// const [data,setData]=useState({})
 
 const TransEnfa = (props) => {
   const [currentState, setCurrentState] = useState("");
@@ -46,13 +40,13 @@ const TransEnfa = (props) => {
 
   const addTransition = () => {
     setTransitionsInput(() => [...transitionsInput, transitionsInput]);
+    if(currentState!='')
     setTransition([...transition, { currentState, symbol, nextStates }]);
     console.log(transition);
   };
-    {
-      if (symbol === "")
-        setSymbol("\u03B5");
-    }
+  {
+    if (symbol === "") setSymbol("\u03B5");
+  }
   props.setTransitions(transition);
 
   console.log(props.nfa);
@@ -69,7 +63,7 @@ const TransEnfa = (props) => {
           Transition Function
         </Typography>
         <div className={styles.formInline}>
-          <div className={styles.transitionRow}>
+          {/* <div className={styles.transitionRow}>
             &delta;(&nbsp;
             <TextField
               id="outlined-size-small"
@@ -102,7 +96,7 @@ const TransEnfa = (props) => {
                 //props.setNextStates(e.target.value)
               }}
             />
-          </div>
+          </div> */}
           {transitionsInput.map((item) => {
             return (
               <div className={styles.transitionRow}>
