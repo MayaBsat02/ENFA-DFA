@@ -26,7 +26,7 @@ export const toDotString=(nfa)=> {
   return dotStr;
 }
 
-function formatDotState(state_str) {
+export const formatDotState=(state_str)=> {
   state_str = state_str.toString();
   if (isMultiState(state_str)) {
     state_str = state_str.substring(1, state_str.length - 1);
@@ -79,7 +79,7 @@ export const getEpsilonClosureNFA = (nfa) => {
           nfa.transitions
         );
         
-        console.log("NEXT STATESSSS", next_states);
+        
         if (next_states.length !== 0) {
           for (let n = 0; n < next_states.length; n++) {
             console.log("next states of n", next_states[n]);

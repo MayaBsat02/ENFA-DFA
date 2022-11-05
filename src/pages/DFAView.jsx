@@ -8,24 +8,20 @@ import { generateDFA,toDotString } from '../helpers/E-NFA-Converter';
  const DFAReview=(props)=>{
 
 // let drawer=toDotString(props.DFA)
-  
+{console.log(props.nfa)}
+let DFA=generateDFA(props.nfa,-1)
+let drawer=toDotString(DFA)
     return(
-        <NFAContext.Consumer>
-        {(context)=>{
-          let DFA=generateDFA(context,-1)
-          let drawer=toDotString(DFA)
           
-          return(
+        
             <div>
               <div className={styles.formInline} id="nfaTransitions">
                 <Graphviz dot={drawer}   />
                 
               </div>
             </div>
-          )
-        }}
+          
         
-        </NFAContext.Consumer>
     )
 }
 

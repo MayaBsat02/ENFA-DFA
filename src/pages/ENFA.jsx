@@ -40,8 +40,8 @@ export default function ENFA(props) {
         variant="standard" 
         className={styles.textInput}
         onChange={(e)=>{
-         
-          props.setStates(e.target.value)
+          
+          props.setStates(getStates(e.target.value))
           setStatesData(e.target.value);
         }} />
       <FormControl fullWidth className={styles.textInput} variant="standard">

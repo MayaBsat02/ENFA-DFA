@@ -11,8 +11,6 @@ import styles from '../style/main.module.css';
 import '../helpers/E-NFA-Converter';
 import DFAReview from './DFAView';
 import NFAContext from '../storeContext/AutomataContext';
-import { toDotString } from '../helpers/E-NFA-Converter';
-import Graphviz from 'graphviz-react';
 const steps = ['Epsilon NFA Description', 'Epsilon NFA Transition Table', 'Epsilon NFA to DFA'];
 
 
@@ -21,19 +19,14 @@ const Index=(props)=>{
 
     const [activeStep, setActiveStep] = React.useState(0);
     const [completed, setCompleted] = React.useState({});
-    const [DFAdata,setDFAdata]=React.useState({});
     const [states, setStatesCount] = React.useState(0);
     const [alphabet, setAlphabet] = React.useState([]);
     const [initialState, setInitial] = React.useState();
     const [finalStates, setFinal] = React.useState();
-    const [transitionsInput,setTransitionsInput]=React.useState([])
     const [transitions,setTransitions]=React.useState();
     const [nfa,setNFA]=React.useState()
 
-    const getNFA=()=>{
-        setNFA({initialState,finalStates,states,alphabet,transitions})
-        console.log(nfa)
-    }
+    
         
     const getTransitions=(data)=>{
         setTransitions(data)
@@ -61,7 +54,13 @@ const Index=(props)=>{
     }
 
    
+    const getNFA=(nfa)=>{
+      setNFA({initialState,finalStates,states,alphabet,transitions})
+      console.log("NFA ISSS",setNFA({initialState,finalStates,states,alphabet,transitions}))
+      return nfa
+  }
 
+  console.log("NFA",nfa)
     const totalSteps = () => {
       return steps.length;
     };
@@ -138,13 +137,8 @@ const Index=(props)=>{
               setStates={setStates}
               setInitial={getInit}
               setFinal={getFinal}
-             
-              
               />
-              
             }
-            
-
             {activeStep==1 && <TransEnfa 
               
               setTransitions={getTransitions}
@@ -154,7 +148,14 @@ const Index=(props)=>{
               finalStates={finalStates}
               nfa={nfa}
             />}
-            {activeStep==2 && <DFAReview DFA={props.DFAdata}/>}
+            {activeStep==2 && <DFAReview 
+            states={states}
+            alphabet={alphabet}
+            initialState={initialState}
+            finalStates={finalStates}
+            transitions={transitions}
+            nfa={nfa}
+            />}
           </NFAContext.Provider>
             
             
