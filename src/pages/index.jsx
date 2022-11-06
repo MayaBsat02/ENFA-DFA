@@ -85,6 +85,9 @@ const Index = (props) => {
           steps.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
+    if(activeStep==1){
+      getNFA(nfa);
+    }
   };
 
   const handleBack = () => {
@@ -189,9 +192,9 @@ const Index = (props) => {
                       <Button onClick={handleNext} sx={{ mr: 1 }}>
                         Next
                       </Button>
-                      <Button onClick={getNFA} sx={{ mr: 1 }}>
+                      {/* <Button onClick={getNFA} sx={{ mr: 1 }}>
                         Submit
-                      </Button>
+                      </Button> */}
                     </Box>
                   </React.Fragment>
                 )}

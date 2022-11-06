@@ -7,73 +7,9 @@ import { checkString } from "../helpers/StringCheck";
 const DFAReview = (props) => {
   const [result, setResult] = React.useState([]);
   let DFA = generateDFA(props.nfa, -1);
-  let dfanew={
-    "initialState": "q1",
-    "finalStates": [
-        "q1",
-        "q2q3",
-        "q1q2q3"
-    ],
-    "states": [
-        "q1",
-        "{q2,q3}",
-        "{q1,q2,q3}",
-        "DEADSTATE"
-    ],
-    "alphabet": [
-        "0",
-        "1"
-    ],
-    "transitions": [
-        {
-            "currentState": "q1",
-            "nextStates": "{q2,q3}",
-            "symbol": "0"
-        },
-        {
-            "currentState": "q1",
-            "nextStates": "{q1,q2,q3}",
-            "symbol": "1"
-        },
-        {
-            "currentState": "{q1,q2,q3}",
-            "nextStates": "{q2,q3}",
-            "symbol": "0"
-        },
-        {
-            "currentState": "{q1,q2,q3}",
-            "nextStates": "{q1,q2,q3}",
-            "symbol": "1"
-        },
-        {
-            "currentState": "{q2,q3}",
-            "nextStates": "{q2,q3}",
-            "symbol": "0"
-        },
-        {
-            "currentState": "DEADSTATE",
-            "nextStates": [
-                "DEADSTATE"
-            ],
-            "symbol": "0"
-        },
-        {
-            "currentState": "DEADSTATE",
-            "nextStates": [
-                "DEADSTATE"
-            ],
-            "symbol": "1"
-        },
-        {
-            "currentState": "{q2,q3}",
-            "nextStates": [
-                "DEADSTATE"
-            ],
-            "symbol": "1"
-        }
-    ]
-}
+  
   let drawer = toDotString(DFA);
+  { console.log("PROPS ARE",DFA.transitions)}
   return (
     <div style={{ alignContent: "center" }}>
       <Typography variant="h6">DFA Review</Typography>
@@ -90,8 +26,9 @@ const DFAReview = (props) => {
               label="Outlined"
               variant="standard"
               onKeyUp={(e) => {
+               
                 // setDrawer(updateGraph(data))
-                setResult(checkString(e.target.value, props.transitions, props.initial));
+                setResult(checkString(e.target.value, DFA.transitions, DFA.initial));
               }}
             />
           </Box>

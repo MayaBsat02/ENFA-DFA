@@ -1,9 +1,7 @@
 import React, { useContext, useState } from "react";
-import Transitions from "../components/transitions";
 import styles from "../style/main.module.css";
 import { Graphviz } from "graphviz-react";
 import { formatDotState } from "../helpers/E-NFA-Converter";
-import NFAContext from "../storeContext/AutomataContext";
 import { Button, Typography, Box, TextField } from "@mui/material";
 
 const TransEnfa = (props) => {
@@ -41,7 +39,7 @@ const TransEnfa = (props) => {
   const addTransition = () => {
     setTransitionsInput(() => [...transitionsInput, transitionsInput]);
     if(currentState!='')
-    setTransition([...transition, { currentState, symbol, nextStates }]);
+    setTransition(()=>[...transition, { currentState, symbol, nextStates }]);
     console.log(transition);
   };
   {

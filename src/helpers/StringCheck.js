@@ -2,20 +2,22 @@ export const checkString = (string, transitions, INITIAL_STATE) => {
     // Initialize the current state to INITIAL_STATE 
     let currentState = INITIAL_STATE;
     //loop on each character of string
-    let current = string.split("").map((char)=>{
+    let currentchar = string.split("").map((char)=>{
         //take variable of reachable state
         let data=transitions.filter((t)=>t.currentState==currentState);
+        console.log("Data",data)
         
-        const currOjbect= new Object(...data);
         
-        //changes the current state to where a character reached
+        // const currOjbect= new Object(...data);
+        
+        // //changes the current state to where a character reached
 
-        currentState=currOjbect[char];
-        console.log(currentState)
-        //save the current state toarray called current
-        return currentState.replaceAll(",", "");
+        // currentState=currOjbect[char];
+        // console.log(currentState)
+        // //save the current state toarray called current
+        // return currentState.replaceAll(",", "");
     })
-    return current
+    return currentchar
   };
 
   export const checkFinalState = (state, DFA) => {
