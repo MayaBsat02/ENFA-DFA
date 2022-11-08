@@ -18,7 +18,7 @@ export const toDotString=(nfa)=> {
       formatDotState(t.nextStates) +
       " [label=" +
       t.symbol +
-      "];\n";
+      "];\n" ;
   }
 
   dotStr += "}";

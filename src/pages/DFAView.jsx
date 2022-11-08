@@ -3,13 +3,44 @@ import styles from "../style/main.module.css";
 import { Graphviz } from "graphviz-react";
 import { generateDFA, toDotString } from "../helpers/E-NFA-Converter";
 import { Box, Grid, Chip, TextField,Typography } from "@mui/material";
-import { checkString } from "../helpers/StringCheck";
+import { checkString,checkFinalState } from "../helpers/StringCheck";
+
 const DFAReview = (props) => {
-  const [result, setResult] = React.useState([]);
+  let [result, setResult] = React.useState([]);
   let DFA = generateDFA(props.nfa, -1);
+  let [drawer, setDrawer] = React.useState(toDotString(DFA));
+  React.useEffect(() => {
+    if (result.length > 0) {
+      // if(result='DEADSTATE'){
+      //   setDrawer(
+      //     drawer
+      //       .substring(0, drawer.length - 1)
+      //       .concat(
+      //         `${result.concat(DFA.initialState)}[style=filled,color=green]; }`
+      //       )
+      //   );
+      // }else{
+        if(result!='DEADSTATE')
+        result=result.replaceAll(",", "").replace(/[{}]/g, "")
+        
+      setDrawer(
+        drawer
+          .substring(0, drawer.length - 1)
+          .concat(
+            `${result.concat(",").concat(DFA.initialState)}[style=filled,color=green]; }`
+          )
+      )
+        
+          
+      console.log("drawer is",drawer)
+          
+    } else {
+      setDrawer(toDotString(DFA));
+      console.log(DFA)
+    }
+  }, [result]);
+  // let drawer = toDotString(DFA);
   
-  let drawer = toDotString(DFA);
-  { console.log("PROPS ARE",DFA.transitions)}
   return (
     <div style={{ alignContent: "center" }}>
       <Typography variant="h6">DFA Review</Typography>
@@ -26,19 +57,18 @@ const DFAReview = (props) => {
               label="Outlined"
               variant="standard"
               onKeyUp={(e) => {
-               
-                // setDrawer(updateGraph(data))
-                setResult(checkString(e.target.value, DFA.transitions, DFA.initial));
+                setDrawer(toDotString(DFA))
+                setResult(checkString(e.target.value, DFA.transitions, DFA.initialState));
               }}
             />
           </Box>
         </Grid>
         <Grid item xs={4} sm={4}>
-          {/* {checkFinalState(result, data) ? ( */}
+          {checkFinalState(result, DFA.transitions,DFA.finalStates) ? (
           <Chip label="Accepted" color="success" variant="standard" />
-          {/* ) : ( */}
+           ) : ( 
           <Chip label="Rejected" color="error" variant="standard" />
-          {/* )} */}
+           )} 
         </Grid>
       </Grid>
     </div>
