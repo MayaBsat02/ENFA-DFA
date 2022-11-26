@@ -17,30 +17,34 @@ export const checkString = (string, transitions, INITIAL_STATE) => {
 
         currentState=currentObject.nextStates;
         console.log(currentState)
-        // //save the current state toarray called current
-        // return currentState.replaceAll(",", "");
+        //save the current state toarray called currentState
+        
     })
-    return currentState
+    if(currentState!='DEADSTATE')
+    return currentState.replaceAll(",", "").replace(/[{}]/g, "");
+    return currentState;
+
   };
 
   export const checkFinalState = (state, transitions,FINALSTATE) => {
-    if(state.length !=0){
-    console.log("REULT STATE IS",state)
     
-      let currentStateObject = new Object(...transitions.filter(t => t.currentState == state))
+    if(state.length>0){
+    console.log("REULT STATE IS",state)
+    // let result=state.map((s)=>{ 
+      let currentStateObject = new Object(...transitions.filter(t => t.currentState.replaceAll(",", "").replace(/[{}]/g, "") == state))
       console.log("current state object is",currentStateObject)
-      let newcurrState=currentStateObject.currentState
-      newcurrState=newcurrState.replaceAll(",", "").replace(/[{}]/g, "")
+      let newcurrState=currentStateObject.currentState.replaceAll(",", "").replace(/[{}]/g, "")
+      
       console.log("NEW CURRENT IS",newcurrState,"and FINAL STATES S",FINALSTATE)
+    //map state array to check if it contains final state
     
       if(FINALSTATE.includes(newcurrState)){
-        console.log(newcurrState,"is final")
-        return true;
+        return true
+
       }
+      else
+        return false;
     
-      return false
-    }
-    // return DFA.finalStates.map((fState) => {
-    //   console.log(fState)
-    // });
+
   };
+}

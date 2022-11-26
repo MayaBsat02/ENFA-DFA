@@ -346,6 +346,96 @@ export const generateDFA = (nfa, step_counter_stop = -1) => {
   return (dfa);
 };
 
+export const minimizeDFA=(dfa)=>{
+  console.log("TIME TO MINIMIZE!");
+
+  for (let state of dfa.states) {
+    for (let state2 of dfa.states) {
+      if (
+        state !== state2 &&
+        dfa.finalStates.includes(formatDotState(state)) ===
+          dfa.finalStates.includes(formatDotState(state2))
+      ) {
+        //console.log("Testing if " + state + " = " + state2);
+
+        let statesEqual = true;
+
+        for (let symbol of dfa.alphabet) {
+          //console.log("--- Symbol " + symbol + " ---");
+
+          let state1_nextStates = findNextStates(
+            state,
+            symbol,
+            dfa.transitions
+          );
+          let state2_nextStates = findNextStates(
+            state2,
+            symbol,
+            dfa.transitions
+          );
+
+          //console.log(state1_nextStates);
+          //console.log(state2_nextStates);
+
+          //console.log("---");
+
+          if (!arraysEqual(state1_nextStates, state2_nextStates)) {
+            statesEqual = false;
+          }
+        }
+
+        if (statesEqual) {
+          let remove = state;
+          let replace = state2;
+
+          console.log(remove);
+          console.log(replace);
+          console.log(dfa.initialState);
+
+          if (dfa.initialState === remove) {
+            remove = state2;
+            replace = state;
+          }
+
+          console.log(
+            "The two states are equal [" + remove + " = " + replace + "]"
+          );
+
+          if (remove === "TRAP") {
+            console.log("Trap state will not be removed.");
+            continue;
+          }
+
+          console.log(dfa.states);
+          console.log("Delete " + remove);
+
+          dfa.states = dfa.states.filter(function (s) {
+            return formatDotState(s) !== formatDotState(remove);
+          });
+
+          dfa.transitions = dfa.transitions.filter(function (t) {
+            if (t.currentState !== remove) {
+              if (t.nextStates[0] === remove) {
+                t.nextStates[0] = replace;
+              }
+              return true;
+            } else {
+              return false;
+            }
+          });
+
+          dfa.finalStates = dfa.finalStates.filter(function (s) {
+            return formatDotState(s) !== formatDotState(remove);
+          });
+        }
+      }
+    }
+  }
+
+  return dfa;
+}
+
+
 function findNextStates(state, symbol, transitions) {
   let next_states = [];
 

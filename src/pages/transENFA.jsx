@@ -34,12 +34,33 @@ const TransEnfa = (props) => {
     dotStr += "}";
     return dotStr;
   };
-  let [drawer, setDrawer] = React.useState(drawGraph());
+
+  const updateGraph = (from, to, symbol) => {
+    let drawer = `digraph { 
+      rankdir=LR; 
+      init[label="",shape=point];
+      node[shape=circle];
+      ${props.finalStates.join(",")}[shape=doublecircle];
+      ${props.initialState};
+      init->${props.initialState};}`;
+      
+
+    if (from && to && symbol) {
+      let newDrawer = drawer.slice(0,- 1);
+      newDrawer = newDrawer.concat(`${from} -> ${to}[label=${symbol}];}`);
+      console.log(newDrawer);
+      return newDrawer;
+    }
+    return drawer;
+  }
+
+  let [drawer, setDrawer] = React.useState(updateGraph());
 
   const addTransition = () => {
     setTransitionsInput(() => [...transitionsInput, transitionsInput]);
     if(currentState!='')
     setTransition(()=>[...transition, { currentState, symbol, nextStates }]);
+    // setDrawer(updateGraph(currentState,nextStates,symbol));
     console.log(transition);
   };
   {
@@ -61,40 +82,6 @@ const TransEnfa = (props) => {
           Transition Function
         </Typography>
         <div className={styles.formInline}>
-          {/* <div className={styles.transitionRow}>
-            &delta;(&nbsp;
-            <TextField
-              id="outlined-size-small"
-              size="small"
-              className="currentStateInput"
-              onChange={(e) => {
-                setCurrentState(e.target.value);
-                //props.setCurrentState(e.target.value)
-              }}
-            />
-            &nbsp;,&nbsp;
-            <TextField
-              id="outlined-basic"
-              size="small"
-              placeholder="&epsilon;"
-              variant="outlined"
-              onChange={(e) => {
-                setSymbol(e.target.value);
-                //props.setSymbol(e.target.value)
-              }}
-            />
-            &nbsp;)&nbsp;=&nbsp;
-            <TextField
-              id="outlined-basic"
-              size="small"
-              variant="outlined"
-              className="nextStates"
-              onChange={(e) => {
-                setNextStates(e.target.value.split(","));
-                //props.setNextStates(e.target.value)
-              }}
-            />
-          </div> */}
           {transitionsInput.map((item) => {
             return (
               <div className={styles.transitionRow}>
@@ -107,6 +94,9 @@ const TransEnfa = (props) => {
                     setCurrentState(e.target.value);
                     //props.setCurrentState(e.target.value)
                   }}
+                  // onInput={(e) => {
+                  //   setDrawer(drawGraph(props.nfa));
+                  // }}
                 />
                 &nbsp;,&nbsp;
                 <TextField
@@ -115,12 +105,15 @@ const TransEnfa = (props) => {
                   placeholder="&epsilon;"
                   variant="outlined"
                   onChange={(e) => {
-                    setSymbol(e.target.value);
-                    // props.setSymbol(e.target.value)
+                    if(e.target.value=="" || e.target.value=="\u03B5") setSymbol("\u03B5")
+                  else setSymbol(e.target.value)
                   }}
-                  onLoad={(e) => {
-                    if (e.target.value === "") setSymbol("\u03B5");
+                  onBlur={(e) => {
+                    if (e.target.value == "" || e.target.value=="\u03B5") setSymbol("\u03B5");
                   }}
+                  // onInput={(e) => {
+                  //   setDrawer(drawGraph(props.nfa));
+                  // }}
                 />
                 &nbsp;)&nbsp;=&nbsp;
                 <TextField
@@ -130,8 +123,12 @@ const TransEnfa = (props) => {
                   className="nextStates"
                   onChange={(e) => {
                     setNextStates(e.target.value.split(","));
-                    //props.setNextStates(e.target.value)
                   }}
+                  // onInput={(e) => {
+                  //   setDrawer(()=>updateGraph(currentState,e.target.value,symbol));
+                  //     // currentState, e.target.value, symbol));
+                  //   console.log(drawer)
+                  // }}
                 />
               </div>
             );

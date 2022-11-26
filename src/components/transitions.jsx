@@ -29,9 +29,13 @@ import { TextField } from '@mui/material';
               
               variant="outlined"
               onChange={(e)=>{
-                  setSymbol(e.target.value)
-                  props.setSymbol(e.target.value)
+                  
                   if(e.target.value==="") setSymbol("\u03B5")
+                  else setSymbol(e.target.value)
+                  
+                  if(e.target.value==="") props.setSymbol("\u03B5")
+                  else
+                  props.setSymbol(e.target.value)
                   
               }} />
               &nbsp;)&nbsp;=&nbsp;

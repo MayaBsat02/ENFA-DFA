@@ -127,15 +127,6 @@ const Index = (props) => {
             </Stepper>
 
             <div style={{ marginTop: "2%" }}>
-              <NFAContext.Provider
-                value={{
-                  initialState,
-                  finalStates,
-                  states,
-                  alphabet,
-                  transitions,
-                }}
-              >
                 {activeStep == 0 && (
                   <ENFA
                     getAlphabet={getAlphabet}
@@ -164,8 +155,6 @@ const Index = (props) => {
                     nfa={nfa}
                   />
                 )}
-              </NFAContext.Provider>
-
               <div style={{ marginTop: "2%" }}>
                 {allStepsCompleted() ? (
                   <React.Fragment>
