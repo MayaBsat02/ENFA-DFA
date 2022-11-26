@@ -1,5 +1,5 @@
 let LAST_COMPLETED_STEP_COUNT = 0;
-export const toDotString=(nfa)=> {
+export const toDotString = (nfa) => {
   let dotStr = "digraph fsm {\n";
   dotStr += "rankdir=LR;\n";
   dotStr += 'size="8,5";\n';
@@ -18,15 +18,15 @@ export const toDotString=(nfa)=> {
       formatDotState(t.nextStates) +
       " [label=" +
       t.symbol +
-      "];\n" ;
+      "];\n";
   }
 
   dotStr += "}";
 
   return dotStr;
-}
+};
 
-export const formatDotState=(state_str)=> {
+export const formatDotState = (state_str) => {
   state_str = state_str.toString();
   if (isMultiState(state_str)) {
     state_str = state_str.substring(1, state_str.length - 1);
@@ -35,9 +35,7 @@ export const formatDotState=(state_str)=> {
   } else {
     return state_str;
   }
-}
-
-
+};
 
 export const getEpsilonClosureNFA = (nfa) => {
   let hasEpsilon = false;
@@ -69,17 +67,14 @@ export const getEpsilonClosureNFA = (nfa) => {
       // for (let t of nfa.transitions) {
       console.log("STATE CLOSURE IS", state_closure);
       for (let k = 0; k < state_closure.length; k++) {
-          
-        
-        console.log("NFA.SYMBOL IS",symbol)
+        console.log("NFA.SYMBOL IS", symbol);
         let stateclosureK = state_closure[k];
         let next_states = findNextStates(
           stateclosureK,
           symbol,
           nfa.transitions
         );
-        
-        
+
         if (next_states.length !== 0) {
           for (let n = 0; n < next_states.length; n++) {
             console.log("next states of n", next_states[n]);
@@ -98,9 +93,9 @@ export const getEpsilonClosureNFA = (nfa) => {
               console.log("symbol next states are:", symbol_next_states);
             }
           }
-        // }
+          // }
+        }
       }
-    }
 
       symbol_next_states.sort();
 
@@ -248,7 +243,7 @@ export const generateDFA = (nfa, step_counter_stop = -1) => {
     } else {
       states = [];
       states.push(state);
-      console.log("seperate",states)
+      console.log("seperate", states);
     }
 
     for (let i = 0; i < nfa.alphabet.length; i++) {
@@ -335,106 +330,16 @@ export const generateDFA = (nfa, step_counter_stop = -1) => {
     LAST_COMPLETED_STEP_COUNT = step_counter;
     console.log("LAST_COMPLETED_STEP_COUNT = " + step_counter);
   }
-  let dfa={
+  let dfa = {
     initialState: nfa.initialState,
     finalStates: dfa_final_states,
     states: dfa_states,
     alphabet: nfa.alphabet,
     transitions: dfa_transitions,
-  }
-  console.log(dfa)
-  return (dfa);
-};
-
-export const minimizeDFA=(dfa)=>{
-  console.log("TIME TO MINIMIZE!");
-
-  for (let state of dfa.states) {
-    for (let state2 of dfa.states) {
-      if (
-        state !== state2 &&
-        dfa.finalStates.includes(formatDotState(state)) ===
-          dfa.finalStates.includes(formatDotState(state2))
-      ) {
-        //console.log("Testing if " + state + " = " + state2);
-
-        let statesEqual = true;
-
-        for (let symbol of dfa.alphabet) {
-          //console.log("--- Symbol " + symbol + " ---");
-
-          let state1_nextStates = findNextStates(
-            state,
-            symbol,
-            dfa.transitions
-          );
-          let state2_nextStates = findNextStates(
-            state2,
-            symbol,
-            dfa.transitions
-          );
-
-          //console.log(state1_nextStates);
-          //console.log(state2_nextStates);
-
-          //console.log("---");
-
-          if (!arraysEqual(state1_nextStates, state2_nextStates)) {
-            statesEqual = false;
-          }
-        }
-
-        if (statesEqual) {
-          let remove = state;
-          let replace = state2;
-
-          console.log(remove);
-          console.log(replace);
-          console.log(dfa.initialState);
-
-          if (dfa.initialState === remove) {
-            remove = state2;
-            replace = state;
-          }
-
-          console.log(
-            "The two states are equal [" + remove + " = " + replace + "]"
-          );
-
-          if (remove === "TRAP") {
-            console.log("Trap state will not be removed.");
-            continue;
-          }
-
-          console.log(dfa.states);
-          console.log("Delete " + remove);
-
-          dfa.states = dfa.states.filter(function (s) {
-            return formatDotState(s) !== formatDotState(remove);
-          });
-
-          dfa.transitions = dfa.transitions.filter(function (t) {
-            if (t.currentState !== remove) {
-              if (t.nextStates[0] === remove) {
-                t.nextStates[0] = replace;
-              }
-              return true;
-            } else {
-              return false;
-            }
-          });
-
-          dfa.finalStates = dfa.finalStates.filter(function (s) {
-            return formatDotState(s) !== formatDotState(remove);
-          });
-        }
-      }
-    }
-  }
-
+  };
+  console.log(dfa);
   return dfa;
-}
-
+};
 
 function findNextStates(state, symbol, transitions) {
   let next_states = [];
@@ -451,7 +356,7 @@ function findNextStates(state, symbol, transitions) {
     }
     // console.log("next states for i =",i,t.next_states)
   }
-console.log("next states are:",next_states)
+  console.log("next states are:", next_states);
   return next_states;
 }
 
@@ -504,14 +409,4 @@ function combineStates(states) {
   console.log("----");
 
   return state;
-}
-
-function arraysEqual(a, b) {
-  if (a === b) return true;
-  if (a == null || b == null) return false;
-  if (a.length !== b.length) return false;
-
-  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
-
-  return true;
 }

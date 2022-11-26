@@ -43,23 +43,25 @@ const TransEnfa = (props) => {
       ${props.finalStates.join(",")}[shape=doublecircle];
       ${props.initialState};
       init->${props.initialState};}`;
-      
 
     if (from && to && symbol) {
-      let newDrawer = drawer.slice(0,- 1);
+      let newDrawer = drawer.slice(0, -1);
       newDrawer = newDrawer.concat(`${from} -> ${to}[label=${symbol}];}`);
       console.log(newDrawer);
       return newDrawer;
     }
     return drawer;
-  }
+  };
 
   let [drawer, setDrawer] = React.useState(updateGraph());
 
   const addTransition = () => {
     setTransitionsInput(() => [...transitionsInput, transitionsInput]);
-    if(currentState!='')
-    setTransition(()=>[...transition, { currentState, symbol, nextStates }]);
+    if (currentState != "")
+      setTransition(() => [
+        ...transition,
+        { currentState, symbol, nextStates },
+      ]);
     // setDrawer(updateGraph(currentState,nextStates,symbol));
     console.log(transition);
   };
@@ -94,9 +96,6 @@ const TransEnfa = (props) => {
                     setCurrentState(e.target.value);
                     //props.setCurrentState(e.target.value)
                   }}
-                  // onInput={(e) => {
-                  //   setDrawer(drawGraph(props.nfa));
-                  // }}
                 />
                 &nbsp;,&nbsp;
                 <TextField
@@ -105,11 +104,13 @@ const TransEnfa = (props) => {
                   placeholder="&epsilon;"
                   variant="outlined"
                   onChange={(e) => {
-                    if(e.target.value=="" || e.target.value=="\u03B5") setSymbol("\u03B5")
-                  else setSymbol(e.target.value)
+                    if (e.target.value == "" || e.target.value == "\u03B5")
+                      setSymbol("\u03B5");
+                    else setSymbol(e.target.value);
                   }}
                   onBlur={(e) => {
-                    if (e.target.value == "" || e.target.value=="\u03B5") setSymbol("\u03B5");
+                    if (e.target.value == "" || e.target.value == "\u03B5")
+                      setSymbol("\u03B5");
                   }}
                   // onInput={(e) => {
                   //   setDrawer(drawGraph(props.nfa));
@@ -124,11 +125,6 @@ const TransEnfa = (props) => {
                   onChange={(e) => {
                     setNextStates(e.target.value.split(","));
                   }}
-                  // onInput={(e) => {
-                  //   setDrawer(()=>updateGraph(currentState,e.target.value,symbol));
-                  //     // currentState, e.target.value, symbol));
-                  //   console.log(drawer)
-                  // }}
                 />
               </div>
             );
