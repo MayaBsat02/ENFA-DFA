@@ -10,10 +10,10 @@ import TransEnfa from "./transENFA";
 import styles from "../style/main.module.css";
 import "../helpers/E-NFA-Converter";
 import DFAReview from "./DFAView";
-import NFAContext from "../storeContext/AutomataContext";
+
 const steps = [
   "Epsilon NFA Description",
-  "Epsilon NFA Transition Table",
+  "Epsilon NFA Transition",
   "Epsilon NFA to DFA",
 ];
 
